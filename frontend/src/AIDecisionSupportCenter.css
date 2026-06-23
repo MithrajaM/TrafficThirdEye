@@ -1,0 +1,182 @@
+.ai-decision-support-center {
+  padding: 24px;
+  background-color: #f9fafb;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.page-header p {
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 24px;
+}
+
+.left-column, .right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  margin-bottom: 12px;
+}
+
+.action-icon {
+  font-size: 24px;
+}
+
+.action-details .action-label {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.action-details .action-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.kpi-card {
+  padding: 16px;
+  border-radius: 8px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.kpi-card.red { background-color: #ef4444; }
+.kpi-card.orange { background-color: #f97316; }
+.kpi-card.green { background-color: #22c55e; }
+
+.kpi-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.kpi-card p {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.factor-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.confidence-score {
+  font-size: 48px;
+  font-weight: 700;
+  text-align: center;
+  color: #4f46e5;
+}
+
+.confidence-subtitle {
+  text-align: center;
+  color: var(--text-light);
+}
+
+.impact-summary div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.impact-summary .improvement-value {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.timeline-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.timeline-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.timeline-step-icon {
+  font-size: 24px;
+}
+
+.timeline-step-label {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.timeline-connector {
+  width: 2px;
+  height: 30px;
+  background-color: #e5e7eb;
+  margin-left: 15px;
+}
+
+.placeholder-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 18px;
+  color: var(--text-light);
+}

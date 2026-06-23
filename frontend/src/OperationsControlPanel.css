@@ -1,0 +1,50 @@
+.ops-control-panel {
+  position: fixed;
+  left: 240px;
+  top: 0;
+  width: 350px;
+  height: 100vh;
+  background-color: white;
+  border-right: 1px solid var(--slate-200);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.ops-control-panel.open {
+  transform: translateX(0);
+}
+
+.ops-panel-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ops-panel-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ops-panel-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--slate-500);
+}
+
+.close-button:hover {
+  color: var(--slate-800);
+}

@@ -82,20 +82,76 @@ def top_junctions():
     return top.to_dict()
 @app.get("/events")
 def get_events():
-
-    data = df[
-        [
-            "latitude",
-            "longitude",
-            "event_cause",
-            "zone",
-            "junction"
-        ]
-    ]
-
-    data = data.fillna("Unknown")
-
-    return data.head(200).to_dict(orient="records")
+    events_list = []
+    # Take first 150 rows for performance and quality of rendering
+    sub_df = df.head(150)
+    for i, (_, row) in enumerate(sub_df.iterrows()):
+        cause = str(row.get("event_cause", "vehicle_breakdown")).lower()
+        base_score = calculate_impact(cause)
+        priority = str(row.get("priority", "Low")).lower()
+        
+        if priority == "high":
+            risk_score = min(100, base_score + 15)
+        else:
+            risk_score = max(10, base_score - 10)
+            
+        raw_status = str(row.get("status", "active")).lower()
+        if raw_status == "closed":
+            status = "Resolved"
+        elif raw_status == "resolved":
+            status = "Monitoring"
+        elif risk_score >= 80:
+            status = "Critical"
+        else:
+            status = "Active"
+            
+        if risk_score >= 85:
+            action_req = "Emergency Protocol"
+            action_taken = "Diversion Activated" if row.get("requires_road_closure") else "Officers Deployed"
+        elif risk_score >= 70:
+            action_req = "Activate Diversion" if row.get("requires_road_closure") else "Deploy Police"
+            action_taken = "Diversion Activated" if row.get("requires_road_closure") else "Officers Deployed"
+        elif risk_score >= 50:
+            action_req = "Barricade Placement"
+            action_taken = "Monitoring Active"
+        else:
+            action_req = "Deploy Police"
+            action_taken = "Monitoring Active"
+            
+        if status == "Resolved":
+            action_taken = "Route Cleared"
+            
+        location = row.get("address")
+        if pd.isna(location) or location == "nan" or not location:
+            location = row.get("junction")
+        if pd.isna(location) or location == "nan" or not location:
+            location = row.get("corridor")
+        if pd.isna(location) or location == "nan" or not location:
+            location = "Bengaluru City Center"
+        else:
+            location = str(location)
+            
+        start_dt = str(row.get("start_datetime", ""))
+        if start_dt and start_dt != "nan":
+            timestamp = start_dt[:16].replace("T", " ")
+        else:
+            timestamp = "2026-06-23 12:00"
+            
+        events_list.append({
+            "id": row.get("id", f"FKID{i:06d}"),
+            "location": location,
+            "event_cause": cause,
+            "event_type": str(row.get("event_type", "unplanned")),
+            "timestamp": timestamp,
+            "risk_score": int(risk_score),
+            "action_required": action_req,
+            "action_taken": action_taken,
+            "status": status,
+            "latitude": float(row.get("latitude")) if not pd.isna(row.get("latitude")) else 12.9716,
+            "longitude": float(row.get("longitude")) if not pd.isna(row.get("longitude")) else 77.5946,
+            "requires_road_closure": bool(row.get("requires_road_closure")) if not pd.isna(row.get("requires_road_closure")) else False
+        })
+    return events_list
 
 @app.get("/hotspots")
 def hotspots():
@@ -144,6 +200,27 @@ def dashboard():
         .nunique()
     ) if "priority" in df.columns else 0
 
+    event_weights = {
+        "vehicle_breakdown": 40,
+        "accident": 60,
+        "construction": 75,
+        "public_event": 90,
+        "procession": 95,
+        "vip_movement": 85,
+        "protest": 95,
+        "water_logging": 80,
+        "tree_fall": 70
+    }
+    
+    # Calculate dataset-driven average congestion index
+    causes = df["event_cause"].fillna("vehicle_breakdown").str.lower()
+    priorities = df["priority"].fillna("Low").str.lower()
+    
+    base_scores = causes.map(event_weights).fillna(50)
+    adjustments = priorities.map({"high": 15, "low": -10, "medium": 0}).fillna(0)
+    scores = (base_scores + adjustments).clip(10, 100)
+    avg_congestion = int(scores.mean()) if not scores.empty else 50
+
     return {
         "total_events":      len(df),
         "vehicle_breakdown": int((df["event_cause"] == "vehicle_breakdown").sum()),
@@ -152,6 +229,7 @@ def dashboard():
         "construction":      int((df["event_cause"] == "construction").sum()),
         "hotspot_count":     unique_junctions,
         "high_risk_count":   high_risk,
+        "congestion_index":  avg_congestion,
     }
 
 @app.get("/event-stats")
