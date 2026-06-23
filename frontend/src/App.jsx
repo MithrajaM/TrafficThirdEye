@@ -24,6 +24,7 @@ import Dashboard from "./Dashboard";
 import MapView from "./Mapview";
 import TrafficCommandCenter from "./TrafficCommandCenter";
 import AIDecisionSupportCenter from "./AIDecisionSupportCenter";
+import Simulator from "./Simulator";
 import "./AIDecisionSupportCenter.css";
 
 // Helper for cause styling
@@ -74,7 +75,7 @@ import SideNav from "./SideNav";
 import Header from "./Header";
 
 function App() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("traffic_command_center");
   const [time, setTime] = useState(new Date());
   
   // Table state
@@ -219,7 +220,7 @@ function App() {
       <div className="main-content-area">
         <Header time={fmtTime} />
         <main className="page-content">
-          {activeTab === "overview" && <TrafficCommandCenter />}}
+          {activeTab === "traffic_command_center" && <TrafficCommandCenter />}
 
           {/* PAGE 2: Live Incident Map */}
           {activeTab === "map" && (

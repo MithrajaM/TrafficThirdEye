@@ -6,13 +6,24 @@
 }
 
 .main-content-area {
-  height: 100vh;
-  overflow-y: auto;
   background-color: var(--background-light);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .page-content {
   padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.page-view.full-height {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-view.animate-fade-in {
@@ -170,7 +181,7 @@
 
 /* MAP VIEW */
 .map-screen-card {
-  height: calc(100vh - 48px);
+  flex-grow: 1; /* Let the card grow to fill the page-view */
   display: flex;
   flex-direction: column;
 }

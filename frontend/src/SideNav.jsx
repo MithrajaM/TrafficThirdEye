@@ -18,8 +18,8 @@ function SideNav({ activeTab, setActiveTab, onToggleOpsPanel }) {
       </div>
       <nav className="side-nav-links">
         <button
-          className={`nav-link-btn ${activeTab === "command_center" ? "active" : ""}`}
-          onClick={() => setActiveTab("command_center")}
+          className={`nav-link-btn ${activeTab === "traffic_command_center" ? "active" : ""}`}
+          onClick={() => setActiveTab("traffic_command_center")}
         >
           <Activity size={18} />
           <span>Traffic Command Center</span>
