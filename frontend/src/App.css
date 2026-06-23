@@ -194,6 +194,7 @@
 
 .map-view-container {
   flex-grow: 1;
+  height: 100%;
 }
 
 .map-legend-wrapper {

@@ -90,7 +90,6 @@ function App() {
   const [showOpsPanel, setShowOpsPanel] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
   const [sharedSimData, setSharedSimData] = useState(null);
-  const [mapView, setMapView] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
 
   // Live Time clock
@@ -195,13 +194,6 @@ function App() {
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
   };
 
-  const focusOnCoord = (lat, lng, zoom = 14) => {
-    if (mapView) {
-      mapView.focusOnCoord(lat, lng, zoom);
-    }
-    setActiveTab("map");
-  };
-
   return (
     <div className="app-grid-layout">
       <SideNav 
@@ -214,7 +206,7 @@ function App() {
           incidents={incidents}
           hotspots={hotspots}
           onClose={() => setShowOpsPanel(false)}
-          onFocusCoord={focusOnCoord}
+          onFocusCoord={() => setActiveTab("map")}
         />
       )}
       <div className="main-content-area">
@@ -257,7 +249,6 @@ function App() {
                       setSharedSimData(data);
                       setActiveTab("ai_center");
                     }}
-                    ref={setMapView}
                   />
                 </div>
               </div>
